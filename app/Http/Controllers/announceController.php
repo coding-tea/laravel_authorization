@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Announce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class announceController extends Controller
 {
@@ -21,6 +22,7 @@ class announceController extends Controller
      */
     public function create()
     {
+        Gate::authorize('add_announce');
         return view('announce.create');
     }
 
@@ -64,7 +66,8 @@ class announceController extends Controller
      */
     public function show(Announce $announce)
     {
-        return view('announce.show', compact($announce));
+        Gate::authorize('view', $announce);
+        return view('announce.show', compact('announce'));
     }
 
     /**
@@ -72,6 +75,7 @@ class announceController extends Controller
      */
     public function edit(Announce $announce)
     {
+        Gate::authorize('update', $announce);
         return view('announce.edit', compact('announce'));
     }
 
@@ -99,7 +103,14 @@ class announceController extends Controller
      */
     public function destroy(Announce $announce)
     {
+        Gate::authorize('delete', $announce);
         $announce->delete();
+        return redirect()->route('announces.index');
+    }
+
+    public function change_etat(Announce $announce, Request $request){
+        Gate::authorize('change_etat');
+        $announce->update($request->all());
         return redirect()->route('announces.index');
     }
 }

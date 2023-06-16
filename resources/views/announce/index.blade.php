@@ -2,7 +2,9 @@
 @section('content')
 
 <div class="container">
-    <a class="btn btn-primary mb-3" href="{{ route('announces.create') }}">create announce</a>
+    @can('add_announce')
+        <a class="btn btn-primary mb-3" href="{{ route('announces.create') }}">create announce</a>
+    @endcan
     @isset($announces)
         <table class="table">
             <thead>
@@ -32,6 +34,7 @@
                     <td> {{ $item->superficie }} </td>
                     <td> {{ $item->prix }} </td>
                     <td>
+                        @can('delete', $item)
                         <form action="{{ route('announces.destroy', $item) }}" method="post" >
                             @csrf
                             @method('DELETE')
@@ -39,6 +42,7 @@
                             <button> <a href="{{ route('announces.show', $item) }}">show</a> </button>
                             <button type="submit" >delete</button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
            @endforeach

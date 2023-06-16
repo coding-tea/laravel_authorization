@@ -24,7 +24,8 @@ class announceSeeder extends Seeder
                 'type' => 'Appartement',
                 'superficie' => $i,
                 'prix' => $i,
-                'neuf' => true
+                'neuf' => true,
+                'user_id' => 1
             ]);
         }
         DB::table('announces')->insert($array);
