@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', function(){
     return view('layout');
-});
+})->name('home');
 
 Route::get('/login', [loginController::class, 'show'])->name('login');
 Route::post('/login', [loginController::class, 'login'])->name('action.login');

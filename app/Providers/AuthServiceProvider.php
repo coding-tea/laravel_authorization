@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Models\Announce;
+use App\Models\User;
+use App\Policies\gerer_announce;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        Announce::class => gerer_announce::class
     ];
 
     /**
@@ -21,6 +25,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('add_announce', function(User $user){
+            return $user->role == 'admin' || $user->role == 'Annonceur';
+        });
+
+        Gate::define('change_etat', function(User $user){
+            return ($user->role == 'admin' || $user->role == 'moderateur') ? Response::allow() : Response::deny();
+        });
     }
 }
