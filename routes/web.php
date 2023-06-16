@@ -19,3 +19,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/', function(){
+    return view('layout');
+});
+
+Route::get('/login', [loginController::class, 'show'])->name('login');
+Route::post('/login', [loginController::class, 'login'])->name('action.login');
+
+Route::get('/register', [registerController::class, 'show'])->name('register');
+Route::post('/register', [registerController::class, 'register'])->name('action.register');
+
+Route::post('/logout', [logoutController::class, 'logout'])->name('logout');
+
+Route::resource('/announces', announceController::class)->middleware('auth');
