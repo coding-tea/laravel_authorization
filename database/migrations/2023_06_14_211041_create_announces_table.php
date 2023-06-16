@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('superficie');
             $table->boolean('neuf');
             $table->decimal('prix', 12);
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
